@@ -23,8 +23,8 @@ information about the convergence of the network. The parameters are:
 
 <random seed for the input pattern: int>
 <random seed for the initial weights: int>
-<ranbdom seed for the path: int>
-<number of theta cycles at each position: int>
+<random seed for the path: int>
+<number of gamma cycles for each theta cycle: int>
 <number of times the agent explores the environment: int>
 <number of training sessions before recorded training: int>
 <number of recorded training sessions: int>
@@ -33,22 +33,22 @@ information about the convergence of the network. The parameters are:
 <learning rate from lEC to hippocampus: int>
 <ratio of the input to mEC (hippocampus vs recurrent): int x100>
 <ratio of the input to HPC (lEC vs mEC): int x100>
-<strengh of hippocampus pattern completion: int x100>
+<strength of hippocampus pattern completion: int x100>
 <difference between learned patterns: int>
 <-c: without will teach 1 memory, with will teach 2 memories>
 <-a: also save the activity data (a lot of data)>
 <-k: will overwrite previous simulation>
-<-w, -u, -s, exmaples of different places where the simulation will save the output, see support_filename.py >
+<-s, example of different places where the simulation will save the output, see support_filename.py >
 
 Example:
 
-> python3  loop_script_convergence.py   10 11 12   2 5   5 10   100 10 10   50  10  90   50
+> python3  loop_script_convergence.py   10 11 12   7 1  5 50  100 10 10    50 10 90   50
 
 this simulation will make an input pattern with random seed '10', the
 initial weights with random seed '11' and the path (dummy number, no
-path here) with random seed ('12'). it will make two runs with
-learning before it records one session... will do 10 different
-learning sessions (with two pre-learning in each). Learning rate will
+path here) with random seed ('12'). each theta cycle will have 7 gamma cycles 
+and will run the pattern only one time. will do 50 different
+learning sessions (with five pre-learning in each). Learning rate will
 be 100 from the hippocampus to grid cells and 10 from the EC to the
 hippocampus. The grid cells will have 50% inputs from place cells and
 another half from recurrent collaterals. The input to the hippocampus
@@ -58,13 +58,13 @@ memory patterns will have 0.5 of correlation.
 
 b) loop_script_morph.py will train the network with two environments
 and simulate the output of the simulation considering a morph between
-the environements. The main results of the paper are taken from
+the environments. The main results of the paper are taken from
 this. The parameters are:
 
 <random seed for the input pattern: int>
 <random seed for the initial weights: int>
-<ranbdom seed for the path: int>
-<number of theta cycles at each position: int>
+<random seed for the path: int>
+<number of gamma cycles for each theta cycle: int>
 <number of times the agent explores the environment: int>
 <number of training sessions before recorded training: int>
 <number of recorded training sessions: int>
@@ -73,16 +73,30 @@ this. The parameters are:
 <learning rate from lEC to hippocampus: int>
 <ratio of the input to mEC (hippocampus vs recurrent): int x100>
 <ratio of the input to HPC (lEC vs mEC): int x100>
-<strengh of hippocampus pattern completion: int x100>
+<strength of hippocampus pattern completion: int x100>
 <difference between learned patterns: int>
 <-a: also save the activity data (a lot of data)>
 <-k: will overwrite previous simulation>
-<-w, -u, -s, examples of different locations where the simulation will save the output, see support_filename.py >
+<-s, example of different locations where the simulation will save the output, see support_filename.py >
 
-c) loop_script_morph_noise.py.. same as before, but with the level of noise 
+#example:
+> python3  loop_script_morph.py   10 11 12   7 1  1  100 10 10    50 10 90   50
 
-d) loop_script_morph_consistency.py.. same as before, but with the level of consistency
+c) loop_script_morph_noise.py.. same as before, but with the variable 
+levels of noise 
+
+#example:
+> python3  loop_script_morph_noise.py   10 11 12   7 1  1  100 10 10    50 10 90   50 
+
+d) loop_script_morph_consistency.py.. same as before, but with variable 
+level of consistency
+
+#example:
+> python3  loop_script_morph_consistency.py   10 11 12   7 1  1  100 10 10    50 10 90   50 
 
 e) loop_script_morph_develop.py.. same as before, but with the level
 of noise in the emulation of the development of grid cells. simulate
 with and without grid cells.
+
+#example:
+> python3  loop_script_morph_develop.py   10 11 12   7 1  1  100 10 10    50 10 90   50

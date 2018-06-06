@@ -15,7 +15,7 @@ class remappingFileNames:
     def __init__(self,simMode = r"default"):
                 
         if (simMode == "default"):
-            self.pathRoot = r"/home/user/"
+            self.pathRoot = r"./"
             self.pathData = r"DATA/" 
             self.pathRemapping = r"Remapping/"
             self.pathSimulation = r"Simulation_{0:02d}/"

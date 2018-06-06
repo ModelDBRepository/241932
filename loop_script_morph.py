@@ -114,10 +114,9 @@ def main(argv):
 
     # flags to set the place to save the files
 	
-    parser.add_argument('-w', '--windows',dest='envir',action='store_const',default="cluster",const="windows")
-    parser.add_argument('-u', '--ufrgs',dest='envir',action='store_const',default="cluster",const="UFRGS")
-    parser.add_argument('-s', '--NPAD',dest='envir',action='store_const',default="cluster",const="NPAD")
-    parser.add_argument('-z', '--zurich',dest='envir',action='store_const',default="cluster",const="zurich")
+#    parser.add_argument('-w', '--windows',dest='envir',action='store_const',default="default",const="windows")
+#    parser.add_argument('-u', '--ufrgs',dest='envir',action='store_const',default="default",const="UFRGS")
+    parser.add_argument('-s', '--cluster',dest='envir',action='store_const',default="default",const="cluster")
     
     # flag to overwrite previous simulation
     parser.add_argument('-k', '--KILL',dest='tokill',action='store_const',default="no",const="yes")
@@ -130,17 +129,20 @@ def main(argv):
 	
     args = parser.parse_args() 
     envir = args.envir
-    conntype = args.conntype
+#    conntype = args.conntype
     actsave = args.actsave
     
     tokill = args.tokill;
     
-    if(conntype=="yes"):
-        conna = True
-        ct = 1
-    else:
-        ct = 0
-        conna = False
+    ct = 0
+    conna = False
+
+#    if(conntype=="yes"):
+#        conna = True
+#        ct = 1
+#    else:
+#        ct = 0
+#        conna = False
         
     if(actsave=="yes"):
         acts = True

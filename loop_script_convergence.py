@@ -98,9 +98,9 @@ def main(argv):
                     
     # define the path for saving the results   
     
-    parser.add_argument('-w', '--windows',dest='envir',action='store_const',default="cluster",const="windows")
-    parser.add_argument('-u', '--ufrgs',dest='envir',action='store_const',default="cluster",const="UFRGS")
-    parser.add_argument('-s', '--npad',dest='envir',action='store_const',default="cluster",const="NPAD")
+#    parser.add_argument('-w', '--windows',dest='envir',action='store_const',default="default",const="windows")
+#    parser.add_argument('-u', '--ufrgs',dest='envir',action='store_const',default="default",const="UFRGS")
+    parser.add_argument('-s', '--cluster',dest='envir',action='store_const',default="default",const="cluster")
     
     
     # without -c, will run with 1 memory (morph from memory to noise). with -c, will run with two memories   
@@ -399,14 +399,14 @@ def main(argv):
                     current_pos_old = current_pos
                     current_pos = array((xxx[pp],yyy[pp]))
                     current_speed = current_pos - current_pos_old
-                    current_lec_activity = base_lec[:,current_pos[0],current_pos[1]]
+                    current_lec_activity = base_lec[:,np.int(current_pos[0]),np.int(current_pos[1])]
                     
                     
                     current_lec_noise = np.random.uniform(0.0,lec_noise,current_lec_activity.shape) 
                     current_mec_noise = np.random.uniform(0.0,mec_noise,current_mec_activity.shape) 
                     current_hpc_noise = np.random.uniform(0.0,hpc_noise,current_hpc_activity.shape)                                
                 
-                    lec_inact_vect[ii,:,xxx[pp],yyy[pp]] = current_lec_activity   
+                    lec_inact_vect[np.int(ii),:,np.int(xxx[pp]),np.int(yyy[pp])] = current_lec_activity   
                 
                     thetaconverge = False
                 
@@ -449,7 +449,7 @@ def main(argv):
                                 current_mec_activity[current_mec_activity<0] = 0.0
                                 current_mec_activity[mec_indexlist[jj]] /= np.max(current_mec_activity[mec_indexlist[jj]])
                                 current_mec_activity[isnan(current_mec_activity)] = 0.0  
-                                mec_inact_vect[ii,mec_indexlist[jj],xxx[pp],yyy[pp]] = current_mec_activity[mec_indexlist[jj]]  
+                                mec_inact_vect[ii,np.int0(mec_indexlist[jj]),np.int0(xxx[pp]),np.int0(yyy[pp])] = current_mec_activity[np.int0(mec_indexlist[jj])]  
                             
         
                             h_l = np.dot(current_lec_activity+current_lec_noise,lec_hpc_weights) 
@@ -491,7 +491,7 @@ def main(argv):
                             current_hpc_activity[current_hpc_activity<current_emax_plast] = 0
                             
                             
-                            hpc_inact_vect[ii,:,xxx[pp],yyy[pp]] = current_hpc_activity
+                            hpc_inact_vect[ii,:,np.int0(xxx[pp]),np.int0(yyy[pp])] = current_hpc_activity
                             
                             if kk==0:
                                 MECconverge[ii,pp,0]= 1.0
@@ -556,9 +556,9 @@ def main(argv):
                         if ccc == 0:
                             hpc_memories.append(current_hpc_activity)
                     
-                    lec_act[:,xxx[pp],yyy[pp]] = current_lec_activity
-                    mec_act[:,xxx[pp],yyy[pp]] = current_mec_activity
-                    hpc_act[:,xxx[pp],yyy[pp]] = current_hpc_activity
+                    lec_act[:,np.int0(xxx[pp]),np.int0(yyy[pp])] = current_lec_activity
+                    mec_act[:,np.int0(xxx[pp]),np.int0(yyy[pp])] = current_mec_activity
+                    hpc_act[:,np.int0(xxx[pp]),np.int0(yyy[pp])] = current_hpc_activity
                 
                                                 
                 mec_act_vect.append(mec_act)
@@ -573,8 +573,8 @@ def main(argv):
                 print('convergence times (max): %d %d %d %d' % (nnnM1,nnnM2,nnnZ1,nnnZ2)) 
                 print('convergence times (0): %d %d %d %d' % (HPCconvergeDisttime[ii,0],HPCconvergetime[ii,0],MECconvergeDisttime[ii,0],MECconvergetime[ii,0])) 
                 print('convergence times (1): %d %d %d %d' % (HPCconvergeDisttime[ii,1],HPCconvergetime[ii,1],MECconvergeDisttime[ii,1],MECconvergetime[ii,1])) 
-                print('dist %.2f %.2f %.2f %.2f' % (HPCconvergeDist[ii,0,nnnM1+1],MECconvergeDist[ii,0,nnnM1+1],HPCconvergeDist[ii,1,nnnM2+1],MECconvergeDist[ii,1,nnnM2+1]))                
-                print('corr %.2f %.2f %.2f %.2f' % (HPCconverge[ii,0,nnnM1+1],MECconverge[ii,0,nnnM1+1],HPCconverge[ii,1,nnnM2+1],MECconverge[ii,1,nnnM2+1]))                
+                print('dist %.2f %.2f %.2f %.2f' % (HPCconvergeDist[ii,0,np.int(nnnM1+1)],MECconvergeDist[ii,0,np.int(nnnM1+1)],HPCconvergeDist[ii,1,np.int(nnnM2+1)],MECconvergeDist[ii,1,np.int(nnnM2+1)]))                
+                print('corr %.2f %.2f %.2f %.2f' % (HPCconverge[ii,0,np.int(nnnM1+1)],MECconverge[ii,0,np.int(nnnM1+1)],HPCconverge[ii,1,np.int(nnnM2+1)],MECconverge[ii,1,np.int(nnnM2+1)]))                
             
                 if(nnnM1==1 and nnnM2==0 and nnnZ1>=0 and nnnZ2>=0 and lllf[ii]>0 and netconverged==False):
                     netconverged = True

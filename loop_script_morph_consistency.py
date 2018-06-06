@@ -95,12 +95,12 @@ def main(argv):
    #                help='input_noise') 
        
     
-    parser.add_argument('-w', '--windows',dest='envir',action='store_const',default="cluster",const="windows")
-    parser.add_argument('-u', '--ufrgs',dest='envir',action='store_const',default="cluster",const="UFRGS")
-    parser.add_argument('-c', '--connected',dest='conntype',action='store_const',default="no",const="yes")    
+#    parser.add_argument('-w', '--windows',dest='envir',action='store_const',default="default",const="windows")
+#    parser.add_argument('-u', '--ufrgs',dest='envir',action='store_const',default="default",const="UFRGS")
+    parser.add_argument('-s', '--cluster',dest='envir',action='store_const',default="default",const="cluster")
+
+    
     parser.add_argument('-a', '--activity',dest='actsave',action='store_const',default="no",const="yes")    
-    parser.add_argument('-s', '--NPAD',dest='envir',action='store_const',default="cluster",const="NPAD")
-    parser.add_argument('-z', '--zurich',dest='envir',action='store_const',default="cluster",const="zurich")
     
     parser.add_argument('-k', '--KILL',dest='tokill',action='store_const',default="no",const="yes")
     
@@ -109,16 +109,19 @@ def main(argv):
     
     envir = args.envir
     
-    conntype = args.conntype
+#    conntype = args.conntype
     actsave = args.actsave
     tokill = args.tokill;
+
+    ct = 0
+    conna = False
     
-    if(conntype=="yes"):
-        conna = True
-        ct = 1
-    else:
-        ct = 0
-        conna = False
+#    if(conntype=="yes"):
+#        conna = True
+#        ct = 1
+#    else:
+#        ct = 0
+#        conna = False
         
     if(actsave=="yes"):
         acts = True
@@ -334,7 +337,7 @@ def main(argv):
                         
             
             
-            xxx,yyy = np.meshgrid(arange(arena_binsize[0]),arange(arena_binsize[0]))
+            xxx,yyy = np.int0(np.meshgrid(arange(arena_binsize[0]),arange(arena_binsize[0])))
             xxx = xxx.ravel()
             yyy = yyy.ravel()
             #ppp = np.random.permutation(len(xxx))
@@ -360,6 +363,8 @@ def main(argv):
             else:                    
                 current_pos = array((xxx[0],yyy[0]))  
             
+            current_pos = np.int0(current_pos)
+            
             current_hpc_activity = np.zeros(hpc_numcells)
             if ((ii<1) or (conna == False)):
                 current_mec_activity = np.zeros(mec_numcells)
@@ -376,7 +381,7 @@ def main(argv):
                 print("aaa %d of %d" % (pp,len(xxx)))    
             
                 current_pos_old = current_pos
-                current_pos = array((xxx[pp],yyy[pp]))
+                current_pos = np.int0(array((xxx[pp],yyy[pp])))
                 current_speed = current_pos - current_pos_old
                 current_lec_activity = base_lec[:,current_pos[0],current_pos[1]]
                 
@@ -385,7 +390,7 @@ def main(argv):
                 current_mec_noise = np.random.uniform(0.0,mec_noise,current_mec_activity.shape) 
                 current_hpc_noise = np.random.uniform(0.0,hpc_noise,current_hpc_activity.shape)                                
             
-                lec_inact_vect[ii,:,xxx[pp],yyy[pp]] = current_lec_activity   
+                lec_inact_vect[ii,:,np.int0(xxx[pp]),np.int0(yyy[pp])] = current_lec_activity   
             
                 for kk in arange(theta_cycles):
             
@@ -417,7 +422,7 @@ def main(argv):
                         current_mec_activity[current_mec_activity<0] = 0.0
                         current_mec_activity[mec_indexlist[jj]] /= np.max(current_mec_activity[mec_indexlist[jj]])
                         current_mec_activity[isnan(current_mec_activity)] = 0.0  
-                        mec_inact_vect[ii,mec_indexlist[jj],xxx[pp],yyy[pp]] = current_mec_activity[mec_indexlist[jj]]  
+                        mec_inact_vect[ii,mec_indexlist[jj],np.int0(xxx[pp]),np.int0(yyy[pp])] = current_mec_activity[mec_indexlist[jj]]  
                     
                     h_l = np.dot(current_lec_activity+current_lec_noise,lec_hpc_weights) 
                     h_l = h_l/np.max(h_l)
@@ -478,7 +483,7 @@ def main(argv):
 #                        ddd[ddd<0] = 0
 #                        current_hpc_activity += ddd * ccc
                     
-                    hpc_inact_vect[ii,:,xxx[pp],yyy[pp]] = current_hpc_activity
+                    hpc_inact_vect[ii,:,np.int0(xxx[pp]),np.int0(yyy[pp])] = current_hpc_activity
                     #hpc_inact_vect[ii,kk,:,xxx[pp],yyy[pp]] = current_hpc_activity
             
                     if (lllf[ii]>0):        
@@ -511,9 +516,9 @@ def main(argv):
                 if ((lllf[ii]>0) and (hpc_pcompl_th<1.0)):                     
                     hpc_memories.append(current_hpc_activity)
                 
-                lec_act[:,xxx[pp],yyy[pp]] = current_lec_activity
-                mec_act[:,xxx[pp],yyy[pp]] = current_mec_activity
-                hpc_act[:,xxx[pp],yyy[pp]] = current_hpc_activity
+                lec_act[:,np.int0(xxx[pp]),np.int0(yyy[pp])] = current_lec_activity
+                mec_act[:,np.int0(xxx[pp]),np.int0(yyy[pp])] = current_mec_activity
+                hpc_act[:,np.int0(xxx[pp]),np.int0(yyy[pp])] = current_hpc_activity
                 
             mec_act_vect.append(mec_act)
             lec_act_vect.append(lec_act)
